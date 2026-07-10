@@ -1,0 +1,355 @@
+:root {
+    --color-bg: #0A0A0A;
+    --color-text: #EAEAEA;
+    --color-muted: #888888;
+    --color-accent-orange: #CC5500;
+    --color-accent-green: #228B22;
+    --font-heading: 'Cormorant Garamond', serif;
+    --font-body: 'Inter', sans-serif;
+    --transition-slow: 1.5s ease-in-out;
+    --transition-medium: 0.8s ease-in-out;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+/* Typography Defaults */
+h1, h2, blockquote {
+    font-family: var(--font-heading);
+    font-weight: 300;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+}
+
+a:hover {
+    opacity: 0.7;
+}
+
+/* View Management */
+.view {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-slow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.view.active {
+    opacity: 1;
+    pointer-events: auto;
+    position: relative; /* flow normally */
+}
+
+.view.hidden {
+    display: none; /* Removed from flow entirely when truly hidden to save layout */
+}
+
+/* --- Landing View --- */
+#view-landing {
+    background-size: cover;
+    background-position: center;
+    justify-content: center;
+    position: fixed; /* Keep it fixed so it covers everything */
+}
+
+/* A dark overlay so text is readable */
+#view-landing::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+
+.landing-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+.landing-content h1 {
+    font-size: 5rem;
+    letter-spacing: 0.2em;
+    margin-bottom: 2rem;
+}
+
+.landing-content .subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    font-family: var(--font-heading);
+    font-style: italic;
+    color: #DDDDDD;
+}
+
+.enter-link {
+    display: inline-block;
+    margin-top: 4rem;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding-bottom: 0.2rem;
+}
+
+/* Landing Fades */
+.fade-in-delay-1 { animation: fadeIn 2s ease-in-out 1s forwards; opacity: 0; }
+.fade-in-delay-2 { animation: fadeIn 2s ease-in-out 3s forwards; opacity: 0; }
+.fade-in-delay-3 { animation: fadeIn 2s ease-in-out 5s forwards; opacity: 0; }
+
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+/* --- Main View --- */
+#view-main {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    text-align: center;
+}
+
+.main-header {
+    margin-bottom: 6rem;
+}
+
+.main-header .logo {
+    font-size: 1.5rem;
+    letter-spacing: 0.3em;
+}
+
+/* General Section Styling */
+section {
+    margin-bottom: 8rem;
+    opacity: 0; /* JS will fade these in on scroll ideally, or just on load */
+    transform: translateY(20px);
+    transition: opacity var(--transition-medium), transform var(--transition-medium);
+}
+
+section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+section h2 {
+    font-size: 1rem;
+    color: var(--color-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 2rem;
+    font-family: var(--font-body);
+}
+
+/* Quote */
+.quote-text {
+    font-size: 2.2rem;
+    line-height: 1.4;
+    margin-bottom: 1.5rem;
+}
+
+.quote-author {
+    font-style: italic;
+    color: var(--color-muted);
+}
+
+/* Music */
+.music-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.album-art {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 4px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    filter: brightness(0.9);
+}
+
+.song-title {
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+.song-artist {
+    color: var(--color-muted);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.listen-btn {
+    border: 1px solid var(--color-muted);
+    padding: 0.5rem 1.5rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.listen-btn:hover {
+    background-color: var(--color-text);
+    color: var(--color-bg);
+}
+
+/* Reflection */
+.reflection-question {
+    font-size: 1.5rem;
+    font-family: var(--font-heading);
+    font-style: italic;
+}
+
+/* Nature */
+.nature-photo {
+    width: 100%;
+    max-height: 600px;
+    object-fit: cover;
+    border-radius: 4px;
+    filter: brightness(0.85);
+}
+
+/* Journal */
+.section-journal {
+    margin-bottom: 4rem;
+}
+
+.section-journal h2 {
+    margin-bottom: 1rem;
+}
+
+#journal-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--color-text);
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    text-align: center;
+    resize: none;
+    padding: 0.5rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+#journal-input:focus {
+    border-bottom-color: var(--color-muted);
+}
+
+#journal-input::placeholder {
+    color: rgba(255, 255, 255, 0.2);
+    font-style: italic;
+}
+
+/* Ambient Sounds */
+.sound-controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.sound-btn {
+    background: transparent;
+    border: none;
+    color: var(--color-muted);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: color 0.3s;
+    text-transform: lowercase;
+}
+
+.sound-btn:hover, .sound-btn.playing {
+    color: var(--color-text);
+}
+
+.sound-btn.playing::before {
+    content: '• ';
+    color: var(--color-accent-orange);
+}
+
+/* Footer Widgets */
+.main-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+    margin-top: 6rem;
+    padding-top: 4rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sunset-clock, .weather-widget {
+    font-size: 0.85rem;
+    color: var(--color-muted);
+}
+
+.sunset-time {
+    display: block;
+    font-size: 1.2rem;
+    color: var(--color-accent-orange);
+    margin-top: 0.3rem;
+}
+
+.weather-widget {
+    color: var(--color-accent-green);
+}
+
+.motto {
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-size: 1.2rem;
+    margin-top: 2rem;
+}
+
+/* --- Hidden View --- */
+#view-4pm {
+    justify-content: center;
+    text-align: center;
+    background-color: #000;
+}
+
+.hidden-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+.hidden-text {
+    font-size: 1.2rem;
+    font-family: var(--font-heading);
+    font-style: italic;
+    color: var(--color-muted);
+    line-height: 1.8;
+}
+
+.return-link {
+    display: inline-block;
+    margin-top: 4rem;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-muted);
+}
