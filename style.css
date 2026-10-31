@@ -160,16 +160,24 @@ section h2 {
     font-family: var(--font-body);
 }
 
-/* Quote */
-.quote-text {
-    font-size: 2.2rem;
-    line-height: 1.4;
-    margin-bottom: 1.5rem;
+/* Quote & Love Message */
+.section-love-message {
+    position: relative;
+    padding: 2rem 1.5rem;
+    border-radius: 12px;
+    background: radial-gradient(circle at center, rgba(204, 85, 0, 0.05) 0%, transparent 75%);
 }
 
-.quote-author {
+.quote-text.love-letter {
+    font-size: 1.85rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    font-family: var(--font-heading);
+    font-weight: 300;
     font-style: italic;
-    color: var(--color-muted);
+    color: #F8EFE6;
+    letter-spacing: 0.02em;
+    text-shadow: 0 2px 25px rgba(255, 180, 150, 0.15);
 }
 
 /* Music */
@@ -177,41 +185,198 @@ section h2 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1.2rem;
+    width: 100%;
+    max-width: 380px;
+    margin: 0 auto;
+}
+
+.album-art-wrapper {
+    position: relative;
+    width: 220px;
+    height: 220px;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(204, 85, 0, 0.15);
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s ease;
+}
+
+.album-art-wrapper:hover {
+    transform: scale(1.03);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7), 0 0 30px rgba(204, 85, 0, 0.25);
 }
 
 .album-art {
-    width: 200px;
-    height: 200px;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    border-radius: 4px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    filter: brightness(0.9);
+    display: block;
+    filter: brightness(0.95);
+    transition: filter 0.4s ease;
+}
+
+.music-card.playing .album-art-wrapper {
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 35px rgba(224, 169, 109, 0.4);
+}
+
+.album-play-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: rgba(10, 10, 10, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #FFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0.9;
+}
+
+.album-art-wrapper:hover .album-play-overlay {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.08);
+    background: rgba(204, 85, 0, 0.7);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.album-play-overlay svg {
+    transition: transform 0.2s ease;
+}
+
+.album-play-overlay .play-icon {
+    margin-left: 2px;
+}
+
+.music-info {
+    width: 100%;
+    text-align: center;
 }
 
 .song-title {
-    font-size: 1.2rem;
+    font-size: 1.35rem;
+    font-family: var(--font-heading);
+    letter-spacing: 0.05em;
     font-weight: 400;
+    margin-bottom: 0.2rem;
 }
 
 .song-artist {
     color: var(--color-muted);
     font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     margin-bottom: 1rem;
 }
 
-.listen-btn {
-    border: 1px solid var(--color-muted);
-    padding: 0.5rem 1.5rem;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+/* Player Bar */
+.song-player-bar {
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0 0.5rem;
 }
 
-.listen-btn:hover {
+.progress-track {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: height 0.2s ease;
+}
+
+.progress-track:hover {
+    height: 6px;
+}
+
+.progress-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-accent-orange), #E0A96D);
+    border-radius: 4px;
+    transition: width 0.1s linear;
+}
+
+.time-display {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+    font-size: 0.78rem;
+    color: var(--color-muted);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Equalizer */
+.equalizer-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 12px;
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+}
+
+.music-card.playing .equalizer-bars {
+    opacity: 1;
+}
+
+.equalizer-bars span {
+    width: 2.5px;
+    background-color: var(--color-accent-orange);
+    border-radius: 1px;
+    height: 3px;
+    transition: height 0.15s ease;
+}
+
+.music-card.playing .equalizer-bars span:nth-child(1) { animation: eqBar 0.9s ease-in-out infinite alternate; }
+.music-card.playing .equalizer-bars span:nth-child(2) { animation: eqBar 0.6s ease-in-out infinite 0.2s alternate; }
+.music-card.playing .equalizer-bars span:nth-child(3) { animation: eqBar 0.8s ease-in-out infinite 0.4s alternate; }
+.music-card.playing .equalizer-bars span:nth-child(4) { animation: eqBar 0.5s ease-in-out infinite 0.1s alternate; }
+
+@keyframes eqBar {
+    0% { height: 3px; }
+    100% { height: 12px; }
+}
+
+.song-play-btn {
+    margin-top: 0.5rem;
+    cursor: pointer;
+    background: transparent;
+    border: 1px solid var(--color-muted);
+    color: var(--color-text);
+    padding: 0.6rem 1.8rem;
+    border-radius: 30px;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: all 0.3s ease;
+}
+
+.song-play-btn:hover {
     background-color: var(--color-text);
     color: var(--color-bg);
+    border-color: var(--color-text);
+}
+
+.music-card.playing .song-play-btn {
+    border-color: var(--color-accent-orange);
+    color: #FFF;
+    background: rgba(204, 85, 0, 0.2);
+}
+
+.hidden {
+    display: none !important;
 }
 
 /* Reflection */
@@ -353,3 +518,74 @@ section h2 {
     letter-spacing: 0.1em;
     color: var(--color-muted);
 }
+
+/* Downwards Dedication */
+.downwards-dedication {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding-top: 1rem;
+}
+
+.downwards-divider {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--color-muted);
+    font-size: 0.8rem;
+    animation: bounceDown 2.2s ease-in-out infinite;
+}
+
+@keyframes bounceDown {
+    0%, 100% { transform: translateY(0); opacity: 0.35; }
+    50% { transform: translateY(6px); opacity: 0.8; }
+}
+
+.downwards-text {
+    font-family: var(--font-heading);
+    font-size: 1.85rem;
+    font-style: italic;
+    letter-spacing: 0.08em;
+    color: #F8D7DA;
+    text-shadow: 0 0 25px rgba(255, 130, 150, 0.4);
+    margin: 0;
+}
+
+.downwards-heart {
+    font-size: 1.5rem;
+    display: inline-block;
+    animation: heartBeat 1.8s ease-in-out infinite;
+}
+
+@keyframes heartBeat {
+    0%, 100% { transform: scale(1); }
+    15% { transform: scale(1.25); filter: drop-shadow(0 0 10px rgba(255, 80, 100, 0.7)); }
+    30% { transform: scale(1.05); }
+    45% { transform: scale(1.2); filter: drop-shadow(0 0 8px rgba(255, 80, 100, 0.6)); }
+}
+
+/* Secret Love in The Fourth Hour */
+.hidden-love-note {
+    margin-top: 2.5rem;
+    padding: 1.5rem 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hidden-love-note p {
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-size: 1.3rem;
+    color: #E8E8E8;
+    line-height: 1.7;
+}
+
+.hidden-signature {
+    margin-top: 1rem;
+    font-size: 1.15rem !important;
+    color: #F8D7DA !important;
+    letter-spacing: 0.05em;
+}
+

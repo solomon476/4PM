@@ -132,7 +132,97 @@ document.addEventListener('DOMContentLoaded', () => {
     updateSunsetClock();
     setInterval(updateSunsetClock, 60000); // update every minute
 
-    // --- Audio Controls ---
+    // --- Featured Song: Lord Huron - The Night We Met ---
+    const audioSong = document.getElementById('audio-song');
+    const musicCard = document.getElementById('music-card');
+    const albumArtWrapper = document.getElementById('album-art-wrapper');
+    const listenBtn = document.getElementById('listen-btn');
+    const listenBtnLabel = document.getElementById('listen-btn-label');
+    const playIcon = document.getElementById('play-icon');
+    const pauseIcon = document.getElementById('pause-icon');
+    const progressTrack = document.getElementById('progress-track');
+    const progressFill = document.getElementById('progress-fill');
+    const currentTimeEl = document.getElementById('current-time');
+    const durationTimeEl = document.getElementById('duration-time');
+
+    function formatTime(seconds) {
+        if (isNaN(seconds)) return '0:00';
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    function updatePlayState(isPlaying) {
+        if (isPlaying) {
+            musicCard.classList.add('playing');
+            playIcon.classList.add('hidden');
+            pauseIcon.classList.remove('hidden');
+            listenBtnLabel.textContent = '❚❚ Pause Song';
+        } else {
+            musicCard.classList.remove('playing');
+            playIcon.classList.remove('hidden');
+            pauseIcon.classList.add('hidden');
+            listenBtnLabel.textContent = '▶ Play Song';
+        }
+    }
+
+    function togglePlaySong() {
+        if (!audioSong) return;
+
+        if (audioSong.paused) {
+            // Optional: Pause ambient sound if one is playing so song can be heard clearly
+            if (currentlyPlaying) {
+                currentlyPlaying.pause();
+                soundBtns.forEach(b => b.classList.remove('playing'));
+                currentlyPlaying = null;
+            }
+
+            audioSong.volume = 0.85;
+            audioSong.play().then(() => {
+                updatePlayState(true);
+            }).catch(e => {
+                console.log('Playback error:', e);
+            });
+        } else {
+            audioSong.pause();
+            updatePlayState(false);
+        }
+    }
+
+    if (listenBtn) listenBtn.addEventListener('click', togglePlaySong);
+    if (albumArtWrapper) albumArtWrapper.addEventListener('click', togglePlaySong);
+
+    if (audioSong) {
+        audioSong.addEventListener('timeupdate', () => {
+            if (audioSong.duration) {
+                const percent = (audioSong.currentTime / audioSong.duration) * 100;
+                progressFill.style.width = `${percent}%`;
+                currentTimeEl.textContent = formatTime(audioSong.currentTime);
+            }
+        });
+
+        audioSong.addEventListener('loadedmetadata', () => {
+            durationTimeEl.textContent = formatTime(audioSong.duration);
+        });
+
+        audioSong.addEventListener('ended', () => {
+            updatePlayState(false);
+            progressFill.style.width = '0%';
+            currentTimeEl.textContent = '0:00';
+        });
+    }
+
+    if (progressTrack) {
+        progressTrack.addEventListener('click', (e) => {
+            if (!audioSong || !audioSong.duration) return;
+            const rect = progressTrack.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const fraction = Math.max(0, Math.min(1, clickX / rect.width));
+            audioSong.currentTime = fraction * audioSong.duration;
+        });
+    }
+
+    // --- Audio Controls (Ambient Sounds) ---
     const soundBtns = document.querySelectorAll('.sound-btn');
     let currentlyPlaying = null;
 
@@ -149,10 +239,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Pause whatever is playing
+            // Pause whatever ambient is playing
             if (currentlyPlaying) {
                 currentlyPlaying.pause();
-                // Find active btn and remove class
                 soundBtns.forEach(b => b.classList.remove('playing'));
             }
 
