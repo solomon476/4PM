@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateSunsetClock();
     setInterval(updateSunsetClock, 60000); // update every minute
 
-    // --- Featured Song: Lord Huron - The Night We Met ---
+    // --- Featured Song: Sia - Elastic Heart ---
     const audioSong = document.getElementById('audio-song');
     const musicCard = document.getElementById('music-card');
     const albumArtWrapper = document.getElementById('album-art-wrapper');
